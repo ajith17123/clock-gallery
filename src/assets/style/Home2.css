@@ -1,0 +1,395 @@
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* ═══════════════════════════════════════
+   COFFEE CREATIONS — Page 2
+   Warm cream & amber theme
+═══════════════════════════════════════ */
+
+:root {
+  --coffee-bg:       #F58727;
+  --coffee-accent:   #1a0a00;
+  --coffee-glow:     rgba(26, 10, 0, 0.45);
+  --coffee-lime:     #fff;
+  --coffee-dark:     #1a0a00;
+  --coffee-mid:      #3b1c00;
+  --coffee-orbit:    185px;
+}
+
+/* ═══════════════════════════════════════
+   PAGE
+═══════════════════════════════════════ */
+
+.home2-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #F58727;
+  overflow: hidden;
+  font-family: "Inter", sans-serif;
+  color: var(--coffee-dark);
+}
+
+.orbit-field2 { display: none; }
+
+/* ═══════════════════════════════════════
+   PRE-OPEN TAGLINE
+═══════════════════════════════════════ */
+
+.bowl-tagline2 {
+  position: absolute;
+  top: calc(50% + 104px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.bowl-tagline2.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.tagline-title2 {
+  font-family: "Unbounded", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a0a00;
+  letter-spacing: 0.03em;
+  margin-bottom: 5px;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.2);
+}
+
+.tagline-sub2 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2c1200;
+  letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════════════════════
+   RADIAL WRAPPER
+═══════════════════════════════════════ */
+
+.radial-wrap2 {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════
+   BOWL BUTTON
+═══════════════════════════════════════ */
+
+.bowl-button2 {
+  position: relative;
+  z-index: 10;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px solid #1a0a00;
+  background: linear-gradient(160deg, #2c1a0e, #1a0d06);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow:
+    0 0 0 10px rgba(26, 10, 0, 0.2),
+    0 12px 32px rgba(0, 0, 0, 0.35),
+    0 0 36px rgba(26, 10, 0, 0.4);
+  transition:
+    transform  0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.bowl-button2:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 0 14px rgba(26, 10, 0, 0.25),
+    0 20px 44px rgba(0, 0, 0, 0.4),
+    0 0 52px rgba(26, 10, 0, 0.55);
+}
+
+.bowl-button2:active { transform: scale(0.96); }
+
+.bowl-button2.active {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 8px rgba(255, 255, 255, 0.25),
+    0 12px 30px rgba(0, 0, 0, 0.35),
+    0 0 36px rgba(255, 255, 255, 0.45);
+}
+
+.bowl-button2:focus-visible {
+  outline: 2px solid var(--coffee-accent);
+  outline-offset: 4px;
+}
+
+.bowl-image2 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: transform 0.5s ease;
+}
+
+.bowl-button2.active .bowl-image2 { transform: rotate(-8deg) scale(1.04); }
+
+.bowl-ring2 {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(26, 10, 0, 0.4);
+  animation: pulse-ring2 2.6s ease-out infinite;
+  pointer-events: none;
+}
+
+.bowl-button2.active .bowl-ring2 { border-color: rgba(141, 110, 99, 0.45); }
+
+@keyframes pulse-ring2 {
+  0%   { transform: scale(0.9); opacity: 0.8; }
+  70%  { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════
+   RADIAL MENU LIST
+═══════════════════════════════════════ */
+
+.radial-menu2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  list-style: none;
+}
+
+/* ═══════════════════════════════════════
+   SPIN ANIMATIONS (same as Page 1)
+═══════════════════════════════════════ */
+
+@keyframes spin-fast2 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(720deg); }
+}
+
+@keyframes spin-slow2 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.phase-fast .radial-menu2 {
+  animation: spin-fast2 1s linear 1 forwards;
+}
+
+.phase-slow .radial-menu2 {
+  animation: spin-slow2 2.5s ease-out 1 forwards;
+}
+
+/* ═══════════════════════════════════════
+   FRUIT ITEMS (coffee items)
+═══════════════════════════════════════ */
+
+.fruit-item2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform:
+    translate(-50%, -50%)
+    rotate(calc(var(--i) * 45deg))
+    translateX(0px);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc((7 - var(--i)) * 35ms);
+}
+
+.radial-wrap2.active .fruit-item2 {
+  transform:
+    translate(-50%, -50%)
+    rotate(calc(var(--i) * 45deg))
+    translateX(var(--coffee-orbit));
+  transition-delay: calc(var(--i) * 40ms);
+}
+
+.phase-fast .fruit-item2,
+.phase-slow .fruit-item2 {
+  transform:
+    translate(-50%, -50%)
+    rotate(calc(var(--i) * 45deg))
+    translateX(var(--coffee-orbit));
+  transition-delay: 0ms !important;
+  transition-duration: 0.2s !important;
+}
+
+.phase-fast .fruit-item2,
+.phase-slow .fruit-item2,
+.phase-reveal .fruit-item2 {
+  pointer-events: none;
+}
+
+.radial-wrap2:not(.active) .fruit-item2 {
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   CONTENT WRAPPER (counter-rotate)
+═══════════════════════════════════════ */
+
+.fruit-content2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  transform: rotate(calc(var(--i) * -45deg));
+  transition: transform 0.35s ease;
+}
+
+.phase-fast .fruit-content2,
+.phase-slow .fruit-content2 {
+  transition: none;
+}
+
+/* ═══════════════════════════════════════
+   COFFEE CIRCLE
+═══════════════════════════════════════ */
+
+.fruit-circle2 {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 14px rgba(26, 10, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.radial-wrap2.active .fruit-circle2 { opacity: 1; }
+
+.phase-fast .fruit-circle2,
+.phase-slow .fruit-circle2 {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.fruit-circle2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   REVEAL PHASE
+═══════════════════════════════════════ */
+
+.phase-reveal .pre-reveal .fruit-circle2 {
+  opacity: 0 !important;
+  transform: scale(0.2);
+  transition: none !important;
+}
+
+.phase-reveal .pre-reveal .fruit-label2 {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+.phase-reveal .just-revealed .fruit-circle2 {
+  opacity: 1 !important;
+  transform: scale(1);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity   0.25s ease !important;
+}
+
+.phase-reveal .just-revealed .fruit-label2 {
+  opacity: 1 !important;
+  transition: opacity 0.35s ease 0.15s !important;
+}
+
+/* ═══════════════════════════════════════
+   COFFEE LABELS
+═══════════════════════════════════════ */
+
+.fruit-label2 {
+  white-space: nowrap;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #1a0a00;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid rgba(26, 10, 0, 0.2);
+  padding: 3px 10px;
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.phase-open .fruit-label2 { opacity: 1; }
+
+.phase-fast .fruit-label2,
+.phase-slow .fruit-label2 {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+/* ═══════════════════════════════════════
+   HOVER (open phase only)
+═══════════════════════════════════════ */
+
+.phase-open .fruit-item2:hover .fruit-circle2 {
+  border-color: #fff;
+  box-shadow:
+    0 8px 22px rgba(26, 10, 0, 0.35),
+    0 0 18px rgba(255, 255, 255, 0.6);
+  transform: scale(1.12);
+}
+
+.phase-open .fruit-item2:hover .fruit-label2 {
+  background: #1a0a00;
+  border-color: #1a0a00;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(26, 10, 0, 0.4);
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
+@media (max-width: 600px) {
+  :root { --coffee-orbit: 140px; }
+  .bowl-button2  { width: 120px; height: 120px; }
+  .fruit-circle2 { width: 72px;  height: 72px;  }
+  .tagline-title2 { font-size: 16px; }
+}
+
+/* ═══════════════════════════════════════
+   REDUCED MOTION
+═══════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .fruit-item2, .bowl-button2, .fruit-circle2, .fruit-label2, .bowl-image2 {
+    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition-delay: 0ms !important;
+  }
+  .phase-fast .radial-menu2,
+  .phase-slow .radial-menu2 { animation: none !important; }
+}

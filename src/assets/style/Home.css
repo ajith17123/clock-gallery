@@ -1,0 +1,412 @@
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  --bg:           #27F5DD;
+  --citrus-gold:  #f6b93b;
+  --lime:         #a8d94a;
+  --text-dark:    #063330;
+  --text-mid:     #085049;
+  --ring-idle:    rgba(246, 185, 59, 0.55);
+  --radius-orbit: 185px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ═══════════════════════════════════════
+   PAGE
+═══════════════════════════════════════ */
+
+.home-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+  font-family: "Inter", sans-serif;
+  color: var(--text-dark);
+}
+
+.orbit-field { display: none; }
+
+/* ═══════════════════════════════════════
+   PRE-OPEN TAGLINE
+═══════════════════════════════════════ */
+
+.bowl-tagline {
+  position: absolute;
+  /* Sits just below the center bowl (bowl half-height 90px + gap 14px) */
+  top: calc(50% + 104px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.bowl-tagline.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.tagline-title {
+  font-family: "Unbounded", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: 0.03em;
+  margin-bottom: 5px;
+}
+
+.tagline-sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-mid);
+  letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════════════════════
+   RADIAL WRAPPER
+═══════════════════════════════════════ */
+
+.radial-wrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════
+   BOWL BUTTON
+═══════════════════════════════════════ */
+
+.bowl-button {
+  position: relative;
+  z-index: 10;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px solid var(--citrus-gold);
+  background: linear-gradient(160deg, #1c1e26, #101116);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow:
+    0 0 0 10px rgba(246, 185, 59, 0.15),
+    0 12px 32px rgba(0, 0, 0, 0.3),
+    0 0 36px var(--ring-idle);
+  transition:
+    transform  0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.bowl-button:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 0 14px rgba(246, 185, 59, 0.22),
+    0 20px 44px rgba(0, 0, 0, 0.35),
+    0 0 52px rgba(246, 185, 59, 0.7);
+}
+
+.bowl-button:active { transform: scale(0.96); }
+
+.bowl-button.active {
+  border-color: var(--lime);
+  box-shadow:
+    0 0 0 8px rgba(168, 217, 74, 0.18),
+    0 12px 30px rgba(0, 0, 0, 0.35),
+    0 0 36px rgba(168, 217, 74, 0.6);
+}
+
+.bowl-button:focus-visible {
+  outline: 2px solid var(--citrus-gold);
+  outline-offset: 4px;
+}
+
+.bowl-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: transform 0.5s ease;
+}
+
+.bowl-button.active .bowl-image { transform: rotate(-8deg) scale(1.04); }
+
+.bowl-ring {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 185, 59, 0.4);
+  animation: pulse-ring 2.6s ease-out infinite;
+  pointer-events: none;
+}
+
+.bowl-button.active .bowl-ring { border-color: rgba(168, 217, 74, 0.45); }
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.9);  opacity: 0.8; }
+  70%  { transform: scale(1.4);  opacity: 0; }
+  100% { transform: scale(1.4);  opacity: 0; }
+}
+
+/* ═══════════════════════════════════════
+   RADIAL MENU LIST
+═══════════════════════════════════════ */
+
+.radial-menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  list-style: none;
+}
+
+/* ───────────────────────────────────────
+   SPIN ANIMATIONS
+   The whole .radial-menu rotates so all
+   8 fruits orbit together as a ring.
+─────────────────────────────────────── */
+
+/* Phase 1 – 2 fast rounds (total 1 s) */
+@keyframes spin-fast {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(720deg); }   /* 2 × 360° */
+}
+
+/* Phase 2 – 1 slow round with deceleration (2.5 s) */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.phase-fast .radial-menu {
+  animation: spin-fast 1s linear 1 forwards;
+}
+
+.phase-slow .radial-menu {
+  animation: spin-slow 2.5s ease-out 1 forwards;
+}
+
+/* ═══════════════════════════════════════
+   FRUIT ITEMS
+═══════════════════════════════════════ */
+
+.fruit-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Collapsed at center */
+  transform:
+    translate(-50%, -50%)
+    rotate(calc(var(--i) * 45deg))
+    translateX(0px);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc((7 - var(--i)) * 35ms);
+}
+
+/* ── Active: fans out to orbit ── */
+.radial-wrap.active .fruit-item {
+  transform:
+    translate(-50%, -50%)
+    rotate(calc(var(--i) * 45deg))
+    translateX(var(--radius-orbit));
+  transition-delay: calc(var(--i) * 40ms);
+}
+
+/* ── During spin: instant fan-out, no stagger ── */
+.phase-fast .fruit-item,
+.phase-slow .fruit-item {
+  transform:
+    translate(-50%, -50%)
+    rotate(calc(var(--i) * 45deg))
+    translateX(var(--radius-orbit));
+  transition-delay: 0ms !important;
+  transition-duration: 0.2s !important;
+}
+
+/* During animation phases: block pointer events */
+.phase-fast .fruit-item,
+.phase-slow .fruit-item,
+.phase-reveal .fruit-item {
+  pointer-events: none;
+}
+
+.radial-wrap:not(.active) .fruit-item {
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   FRUIT CONTENT WRAPPER
+   Counter-rotates so circle + label
+   always face upright on screen.
+═══════════════════════════════════════ */
+
+.fruit-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  /* Counter-rotate by the same angle the fruit-item was rotated */
+  transform: rotate(calc(var(--i) * -45deg));
+  transition: transform 0.35s ease;
+}
+
+/* During spin: let content spin WITH the ring (looks like a spinning wheel) */
+.phase-fast .fruit-content,
+.phase-slow .fruit-content {
+  transition: none;
+}
+
+/* ═══════════════════════════════════════
+   FRUIT CIRCLE
+═══════════════════════════════════════ */
+
+.fruit-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transition: opacity 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Visible when active */
+.radial-wrap.active .fruit-circle { opacity: 1; }
+
+/* Visible during spin phases */
+.phase-fast .fruit-circle,
+.phase-slow .fruit-circle {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.fruit-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   REVEAL PHASE — one-by-one pop-in
+═══════════════════════════════════════ */
+
+/* Fruits awaiting reveal: hidden & shrunk */
+.phase-reveal .pre-reveal .fruit-circle {
+  opacity: 0 !important;
+  transform: scale(0.2);
+  transition: none !important;
+}
+
+.phase-reveal .pre-reveal .fruit-label {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+/* Fruits that just popped in: spring animation */
+.phase-reveal .just-revealed .fruit-circle {
+  opacity: 1 !important;
+  transform: scale(1);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity   0.25s ease !important;
+}
+
+.phase-reveal .just-revealed .fruit-label {
+  opacity: 1 !important;
+  transition: opacity 0.35s ease 0.15s !important;
+}
+
+/* ═══════════════════════════════════════
+   FRUIT LABEL
+   Sits naturally below the circle
+   in normal document flow.
+═══════════════════════════════════════ */
+
+.fruit-label {
+  white-space: nowrap;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-dark);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1.5px solid rgba(6, 51, 48, 0.15);
+  padding: 3px 10px;
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Labels visible in open phase */
+.phase-open .fruit-label { opacity: 1; }
+
+/* Labels hidden during spin */
+.phase-fast .fruit-label,
+.phase-slow .fruit-label {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+/* ═══════════════════════════════════════
+   HOVER (open phase only)
+═══════════════════════════════════════ */
+
+.phase-open .fruit-item:hover .fruit-circle {
+  border-color: var(--citrus-gold);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28),
+    0 0 18px rgba(246, 185, 59, 0.55);
+  transform: scale(1.12);
+}
+
+.phase-open .fruit-item:hover .fruit-label {
+  background: rgba(246, 185, 59, 0.95);
+  border-color: var(--citrus-gold);
+  box-shadow: 0 0 10px rgba(246, 185, 59, 0.4);
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
+@media (max-width: 600px) {
+  :root { --radius-orbit: 140px; }
+  .bowl-button   { width: 120px; height: 120px; }
+  .fruit-circle  { width: 72px;  height: 72px;  }
+  .tagline-title { font-size: 16px; }
+  .tagline-sub   { font-size: 11px; }
+}
+
+/* ═══════════════════════════════════════
+   REDUCED MOTION
+═══════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .fruit-item, .bowl-button, .fruit-circle, .fruit-label, .bowl-image {
+    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition-delay: 0ms !important;
+  }
+  .phase-fast .radial-menu,
+  .phase-slow .radial-menu { animation: none !important; }
+}
