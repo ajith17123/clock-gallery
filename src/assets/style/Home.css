@@ -1,11 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
-  --bg:           #27F5DD;
+  --bg:           #153D26;
   --citrus-gold:  #f6b93b;
   --lime:         #a8d94a;
-  --text-dark:    #063330;
-  --text-mid:     #085049;
+  --text-dark:    #FFFFFF;
+  --text-mid:     #E8F5E9;
   --ring-idle:    rgba(246, 185, 59, 0.55);
   --radius-orbit: 185px;
 }
@@ -347,14 +347,14 @@
   font-weight: 500;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--text-dark);
-  background: rgba(255, 255, 255, 0.82);
-  border: 1.5px solid rgba(6, 51, 48, 0.15);
+  color: #063330;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
   padding: 3px 10px;
   border-radius: 999px;
   opacity: 0;
   transition: opacity 0.3s ease;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Labels visible in open phase */
@@ -382,12 +382,203 @@
 .phase-open .fruit-item:hover .fruit-label {
   background: rgba(246, 185, 59, 0.95);
   border-color: var(--citrus-gold);
+  color: #063330;
   box-shadow: 0 0 10px rgba(246, 185, 59, 0.4);
 }
 
 /* ═══════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════ */
+
+/* ═══════════════════════════════════════
+   INFO PANELS (Advantages & Disadvantages)
+   Glassmorphism floating cards
+   ═══════════════════════════════════════ */
+
+.info-panel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 310px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  z-index: 50;
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.info-panel--left {
+  left: -350px;
+  border-left: 5px solid #81C784; /* Soft green accent */
+}
+
+.info-panel--right {
+  right: -350px;
+  border-left: 5px solid #FF8A80; /* Soft red/coral accent */
+}
+
+.info-panel.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.info-panel--left.visible {
+  left: 5%;
+}
+
+.info-panel--right.visible {
+  right: 5%;
+}
+
+.info-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.info-icon--pro {
+  background: rgba(129, 199, 132, 0.2);
+  color: #A5D6A7;
+}
+
+.info-icon--con {
+  background: rgba(255, 138, 128, 0.2);
+  color: #FF8A80;
+}
+
+.info-panel-title h3 {
+  font-family: "Unbounded", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.info-panel--left .info-panel-title h3 {
+  color: #A5D6A7;
+}
+
+.info-panel--right .info-panel-title h3 {
+  color: #FF8A80;
+}
+
+.info-panel-subtitle {
+  font-family: "Unbounded", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-panel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-panel-list li {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #E8F5E9;
+  position: relative;
+  padding-left: 18px;
+  text-align: left;
+}
+
+.info-panel-list li::before {
+  content: "•";
+  position: absolute;
+  left: 4px;
+  top: 0;
+}
+
+.info-panel--left .info-panel-list li::before {
+  color: #A5D6A7;
+}
+
+.info-panel--right .info-panel-list li::before {
+  color: #FF8A80;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+
+@media (max-width: 1280px) {
+  .info-panel {
+    width: 250px;
+  }
+  .info-panel--left.visible {
+    left: 2%;
+  }
+  .info-panel--right.visible {
+    right: 2%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .info-panel {
+    position: relative;
+    top: auto;
+    transform: none;
+    width: 90%;
+    max-width: 450px;
+    margin: 10px auto;
+    pointer-events: auto;
+  }
+  
+  .info-panel--left, .info-panel--right {
+    left: auto !important;
+    right: auto !important;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .info-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .home-container {
+    height: auto;
+    min-height: 100vh;
+    padding: 80px 20px;
+    justify-content: flex-start;
+  }
+  
+  .radial-wrap {
+    margin: 40px auto 20px auto;
+  }
+}
 
 @media (max-width: 600px) {
   :root { --radius-orbit: 140px; }
@@ -399,7 +590,7 @@
 
 /* ═══════════════════════════════════════
    REDUCED MOTION
-═══════════════════════════════════════ */
+   ═══════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
   .fruit-item, .bowl-button, .fruit-circle, .fruit-label, .bowl-image {

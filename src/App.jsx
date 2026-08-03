@@ -8,6 +8,54 @@ const PAGES = [Home, Home2];
 function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [animClass,   setAnimClass]   = useState('');
+  const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [isCursorVisible, setIsCursorVisible] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+      if (!isCursorVisible) setIsCursorVisible(true);
+    };
+
+    const handleMouseOver = (e) => {
+      const target = e.target;
+      if (!target) return;
+      
+      const isClickable = 
+        target.tagName === 'BUTTON' || 
+        target.closest('button') || 
+        target.closest('.fruit-circle') || 
+        target.closest('.fruit-circle2') || 
+        target.closest('.fruit-item') || 
+        target.closest('.fruit-item2') ||
+        target.closest('.dot') ||
+        target.tagName === 'A' ||
+        target.classList.contains('clickable');
+      
+      setIsHovering(!!isClickable);
+    };
+
+    const handleMouseLeaveWindow = () => {
+      setIsCursorVisible(false);
+    };
+
+    const handleMouseEnterWindow = () => {
+      setIsCursorVisible(true);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('mouseleave', handleMouseLeaveWindow);
+    document.addEventListener('mouseenter', handleMouseEnterWindow);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseleave', handleMouseLeaveWindow);
+      document.removeEventListener('mouseenter', handleMouseEnterWindow);
+    };
+  }, [isCursorVisible]);
 
   const navigate = (direction) => {
     const next = currentPage + direction;
@@ -29,6 +77,14 @@ function App() {
 
   return (
     <div className="app-shell">
+      {/* Custom Circular Cursor */}
+      {isCursorVisible && (
+        <div 
+          className={`custom-cursor ${isHovering ? 'hovering' : ''}`}
+          style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+        />
+      )}
+
       {/* Page with transition */}
       <div className={`page-wrapper ${animClass}`}>
         <PageComponent />

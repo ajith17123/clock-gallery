@@ -12,15 +12,69 @@ import coldBrewImg     from "../assets/images/cold_brew.jpg";
 import flatWhiteImg    from "../assets/images/flat_white.jpg";
 
 const COFFEES = [
-  { name: "Espresso",   img: espressoImg   },  // i=0 → 0°   (3 o'clock)
-  { name: "Cappuccino", img: cappuccinoImg  },  // i=1 → 45°
-  { name: "Latte",      img: latteImg       },  // i=2 → 90°  (6 o'clock)
-  { name: "Mocha",      img: mochaImg       },  // i=3 → 135°
-  { name: "Americano",  img: americanoImg   },  // i=4 → 180° (9 o'clock)
-  { name: "Macchiato",  img: macchiatoImg   },  // i=5 → 225°
-  { name: "Cold Brew",  img: coldBrewImg    },  // i=6 → 270° (12 o'clock)
-  { name: "Flat White", img: flatWhiteImg   },  // i=7 → 315°
+  {
+    name: "Espresso",
+    img: espressoImg,
+    advantages: ["Extremely rich in health antioxidants", "Enhances memory recall and focus", "Very low in calories (nearly zero)"],
+    disadvantages: ["High caffeine spike can trigger jitteriness", "Can increase heart rate temporarily", "May irritate empty stomach lining"]
+  },
+  {
+    name: "Cappuccino",
+    img: cappuccinoImg,
+    advantages: ["Balanced flavor profile", "Milk foam provides protein & calcium", "Helps prevent cellular oxidation"],
+    disadvantages: ["Higher in calories than black coffee", "Can trigger dairy/lactose sensitivity", "Foam goes flat if not consumed quickly"]
+  },
+  {
+    name: "Latte",
+    img: latteImg,
+    advantages: ["Very smooth, mild coffee flavor", "Provides calcium and essential vitamins", "Highly customizable with syrups"],
+    disadvantages: ["Highest calorie option due to milk volume", "Dilutes the direct strength of espresso", "Can lead to bloating for some"]
+  },
+  {
+    name: "Mocha",
+    img: mochaImg,
+    advantages: ["Rich, comforting chocolate flavor", "Boosts mood and neurotransmitters", "Great dessert-coffee alternative"],
+    disadvantages: ["Very high in sugar and fats", "Easy to consume excess calories", "Can cause sugar crashes later"]
+  },
+  {
+    name: "Americano",
+    img: americanoImg,
+    advantages: ["Low calorie and sugar-free", "Retains deep, complex coffee notes", "More hydrating due to added hot water"],
+    disadvantages: ["Can taste overly bitter if over-extracted", "High acidity levels", "Lacks the creamy texture of milk coffees"]
+  },
+  {
+    name: "Macchiato",
+    img: macchiatoImg,
+    advantages: ["Strong espresso taste with a milk touch", "Very low in calories and sugars", "Perfect afternoon pick-me-up size"],
+    disadvantages: ["Can be too intense for sweet-coffee fans", "Very small serving volume", "Cooler temperature due to cold milk dot"]
+  },
+  {
+    name: "Cold Brew",
+    img: coldBrewImg,
+    advantages: ["67% less acidic than hot coffee", "Naturally sweeter, smoother taste", "Higher caffeine content for focus"],
+    disadvantages: ["High caffeine can disrupt sleep schedules", "Requires 12+ hours to brew at home", "Can be easy to over-consume cold"]
+  },
+  {
+    name: "Flat White",
+    img: flatWhiteImg,
+    advantages: ["Velvety microfoam texture", "Stronger espresso kick than a latte", "Consistent rich flavor throughout"],
+    disadvantages: ["High milk content adds calories", "Lactose issues for milk-sensitive folks", "Requires high barista skill to make"]
+  }
 ];
+
+const DEFAULT_COFFEE_INFO = {
+  name: "Coffee Creations",
+  advantages: [
+    "Boosts metabolic rate and fat burning",
+    "Contains essential nutrients like B-vitamins",
+    "Improves physical and cognitive performance"
+  ],
+  disadvantages: [
+    "Excess caffeine can disrupt sleep quality",
+    "Can lead to mild physical dependency",
+    "Stains tooth enamel with frequent drinking"
+  ]
+};
 
 // Reveal from 12 o'clock clockwise: Cold Brew(6), Flat White(7), Espresso(0)…
 const REVEAL_ORDER    = [6, 7, 0, 1, 2, 3, 4, 5];
@@ -31,6 +85,7 @@ const REVEAL_INTERVAL = 320;    // ms between each coffee pop-in
 export default function Home2() {
   const [phase, setPhase]             = useState("idle");
   const [revealedSet, setRevealedSet] = useState(new Set());
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const timers = useRef([]);
 
   const addTimer = (fn, delay) => {
@@ -77,6 +132,7 @@ export default function Home2() {
     clearTimers();
     setPhase("idle");
     setRevealedSet(new Set());
+    setHoveredIndex(null);
   };
 
   const handleBowlClick = () => {
@@ -96,9 +152,39 @@ export default function Home2() {
     .filter(Boolean)
     .join(" ");
 
+  const activeInfo = hoveredIndex !== null ? COFFEES[hoveredIndex] : DEFAULT_COFFEE_INFO;
+
   return (
     <div className="home2-container">
       <div className="orbit-field2" aria-hidden="true" />
+
+      {/* Floating Advantages Panel */}
+      <div className={`info-panel2 info-panel2--left ${phase === "open" ? "visible" : ""}`}>
+        <div className="info-panel2-title">
+          <span className="info-icon2 info-icon2--pro">✓</span>
+          <h3>Advantages</h3>
+        </div>
+        <div className="info-panel2-subtitle">{activeInfo.name}</div>
+        <ul className="info-panel2-list">
+          {activeInfo.advantages.map((adv, idx) => (
+            <li key={idx}>{adv}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Floating Disadvantages Panel */}
+      <div className={`info-panel2 info-panel2--right ${phase === "open" ? "visible" : ""}`}>
+        <div className="info-panel2-title">
+          <span className="info-icon2 info-icon2--con">✗</span>
+          <h3>Disadvantages</h3>
+        </div>
+        <div className="info-panel2-subtitle">{activeInfo.name}</div>
+        <ul className="info-panel2-list">
+          {activeInfo.disadvantages.map((dis, idx) => (
+            <li key={idx}>{dis}</li>
+          ))}
+        </ul>
+      </div>
 
       {/* Pre-open tagline */}
       <div className={`bowl-tagline2 ${isMenuVisible ? "hidden" : ""}`}>
@@ -121,7 +207,13 @@ export default function Home2() {
               .join(" ");
 
             return (
-              <li key={coffee.name} className={itemClass} style={{ "--i": i }}>
+              <li
+                key={coffee.name}
+                className={itemClass}
+                style={{ "--i": i }}
+                onMouseEnter={() => phase === "open" && setHoveredIndex(i)}
+                onMouseLeave={() => phase === "open" && setHoveredIndex(null)}
+              >
                 <div className="fruit-content2">
                   <div className="fruit-circle2" tabIndex={phase === "open" ? 0 : -1}>
                     <img src={coffee.img} alt={coffee.name} draggable="false" />

@@ -133,3 +133,48 @@
   border-color: rgba(0, 0, 0, 0.6);
   transform: scale(1.25);
 }
+
+/* ═══════════════════════════════════════
+   CUSTOM CIRCULAR CURSOR
+   ═══════════════════════════════════════ */
+
+/* Hide default cursor on desktop devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  html, body, .app-shell, button, a, .bowl-button, .bowl-button2, .fruit-circle, .fruit-circle2, .dot {
+    cursor: none !important;
+  }
+  
+  .custom-cursor {
+    display: block;
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                height 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                background-color 0.2s ease, 
+                border-color 0.2s ease;
+  }
+
+  /* Expanded circle cursor on hover of interactive elements */
+  .custom-cursor.hovering {
+    width: 26px;
+    height: 26px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Fallback: hide custom cursor on touch/mobile devices */
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
